@@ -5,13 +5,19 @@ var objects = [];
 
 function render(data){
   objects.forEach(function(o){
+    console.dir(o);
     o.setMap(null);
   });
   data.forEach(function(geom){
+    var radius = 1000;
+    if(geom.data.p20_005 > 0){
+      radius = parseInt(geom.data.p20_005) / 1000;
+    }
+
     var circle = new google.maps.Circle({
       map: map,
-      center: {lat: geom.coordinates[1], lng: geom.coordinates[0]},
-      radius: 100
+      center: {lat: geom.geojson.coordinates[1], lng: geom.geojson.coordinates[0]},
+      radius: radius
     });
     objects.push(circle);
   });

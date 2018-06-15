@@ -7,7 +7,10 @@ $west = $_GET['w'];
 $east = $_GET['e'];
 $south = $_GET['s'];
 $zoom = $_GET['zoom'];
-
+//if($zoom < 13){
+//    echo json_encode([]);
+//    exit;
+//}
 // 四角形で囲んでる感じ
 $bounds = array();
 $bounds[] = 'POLYGON((';
@@ -29,9 +32,10 @@ if(!$db){
 }
 
 $sql = <<<EOS
-SELECT ST_AsGeoJson((geom)) AS geojson
-FROM mcdnald2
+SELECT *, ST_AsGeoJson((geom)) AS geojson
+FROM shelter
 WHERE ST_Intersects(geom, ST_GeomFromText($1, 4326)) = True
+LIMIT 100
 EOS;
 
 $result = pg_prepare($db, '', $sql);
@@ -39,7 +43,10 @@ $result = pg_execute($db, '', [implode("\n", $bounds)]);
 
 $json = [];
 while(($row = pg_fetch_assoc($result)) != NULL){
-    $json[] = json_decode($row['geojson']);
+    $json[] = [
+        'geojson' => json_decode($row['geojson']),
+        'data' => $row,
+    ];
 }
 
 header('content-type: application/json; charset=utf-8');
