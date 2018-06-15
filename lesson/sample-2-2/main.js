@@ -9,6 +9,7 @@ function initMap() {
     });
 
   // circle
+  /*
   var circle_coordinates = [
     {lat: 35.174044, lng: 136.892795},
     {lat: 35.168431, lng: 136.886906},
@@ -22,5 +23,24 @@ function initMap() {
       radius: 100
     });
   });
-}
+  */
+ $.ajax({
+   url: 'data.json',
+   type: 'GET',
+   dataType: 'json'
+ }).done(function (data) {
+   data.circle_coordinates.forEach(coordinate => {
+    var circle = new google.maps.Circle({
+      map: map,
+      center: coordinate,
+      radius: 500,
+      strokeColor: '#ff0000',
+      fillColor: '#ff0000',
+      fillOpacity: 0.5
+    });
+   });
 
+ }).fail(function() {
+ });
+
+}
