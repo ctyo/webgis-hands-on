@@ -1,13 +1,19 @@
 'strict'
 
 var map = null;
+var objects = [];
+
 function render(data){
+  objects.forEach(function(o){
+    o.setMap(null);
+  });
   data.forEach(function(geom){
     var circle = new google.maps.Circle({
       map: map,
       center: {lat: geom.coordinates[1], lng: geom.coordinates[0]},
       radius: 100
     });
+    objects.push(circle);
   });
 }
 
