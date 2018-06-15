@@ -12,7 +12,10 @@ function initMap() {
     var circle = new google.maps.Circle({
       map: map,
       center: circle_coordinate,
-      radius: 100
+      radius: 500,
+      strokeColor: '#ff0000',
+      fillColor: '#ff0000',
+      fillOpacity: 0.5
     });
 }
 
