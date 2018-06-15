@@ -21,4 +21,5 @@ while(($row = pg_fetch_assoc($result)) != NULL){
     $json[] = json_decode($row['geojson']);
 }
 
+header('content-type: application/json; charset=utf-8');
 echo json_encode($json);
